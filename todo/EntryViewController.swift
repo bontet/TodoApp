@@ -7,23 +7,45 @@
 
 import UIKit
 
-class EntryViewController: UIViewController {
+class EntryViewController: UIViewController, UITextFieldDelegate {
+    
+//    Add text field
+    
+    @IBOutlet var field: UITextField!
+    
+    var update: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        field.delegate = self
 
-        // Do any additional setup after loading the view.
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTodoData))
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        saveTodoData()
+        return true
     }
-    */
+    
+    @objc func saveTodoData() {
+        guard let text = field.text, !text.isEmpty else {
+            return
+        }
+        
+        guard let count  = UserDefaults().value(forKey: "count") as? Int else {
+            return
+        }
+        
+        let newCount = count + 1
+        
+        UserDefaults().set(newCount, forKey: "count")
+        UserDefaults().set(text, forKey: "todo_\(newCount)")
+        
+        update?()
+        
+        navigationController?.popViewController(animated: true)
+    }
+    
 
 }

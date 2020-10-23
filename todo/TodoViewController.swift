@@ -8,22 +8,23 @@
 import UIKit
 
 class TodoViewController: UIViewController {
+    
+    @IBOutlet var label: UILabel!
+    
+    var todo: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        label.text = todo
+        
+//        Navigation when delete button is clicked
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete", style: .done, target: self, action: #selector(deleteTodo))
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func deleteTodo() {
+        
     }
-    */
+
 
 }
